@@ -1,49 +1,68 @@
-var bullet,wall;
+var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
+var packageBody,ground
+const Engine = Matter.Engine;
+const World = Matter.World;
+const Bodies = Matter.Bodies;
+const Body = Matter.Body;
 
-var speed,weight,thickness;
-
-
+function preload()
+{
+	helicopterIMG=loadImage("helicopter.png")
+	packageIMG=loadImage("package.png")
+}
 
 function setup() {
-  createCanvas(1600,400);
+	createCanvas(800, 700);
+	rectMode(CENTER);
+	
 
-  createSprite(400, 200, 50, 50);
+	packageSprite=createSprite(width/2, 80, 10,10);
+	packageSprite.addImage(packageIMG)
+	packageSprite.scale=0.2
 
-  speed = random(223,321);
+	helicopterSprite=createSprite(width/2, 200, 10,10);
+	helicopterSprite.addImage(helicopterIMG)
+	helicopterSprite.scale=0.6
 
-  weight =random(30,52);
+	groundSprite=createSprite(width/2, height-35, width,10);
+	groundSprite.shapeColor=color(255)
 
-  bullet=createSprite(50,200,50,50);
 
-  wall=createSprite(1200,200,thickness,height/2);
+	engine = Engine.create();
+	world = engine.world;
 
-  wall.shapeColor= color(80,80,80);
+	packageBody = Bodies.circle(width/2 , 200 , 5 , {restitution:0.5, isStatic:true});
+	World.add(world, packageBody);
+	
 
-  bullet.velocityX = speed;
+	//Create a Ground
+	ground = Bodies.rectangle(width/2, 650, width, 10 , {isStatic:true} );
+ 	World.add(world, ground);
+
+
+
+	Engine.run(engine);
   
-  thickness=random(20,83)
 }
+
 
 function draw() {
-
-  background(255,255,255);  
-
-if(wall.x - bullet.x < wall.width/2 + bullet.width/2) {
-
-  var damage = 0.5*weight*speed*speed/thickness*thickness*thickness;
-  bullet.velocityX=0
-
- if(damage<30){
-
-   bullet.shapeColor = "green";
-
- } 
-
- if(damage>50){
-
-   bullet.shapeColor = "red";
-
- }
-}
+  rectMode(CENTER);
+  background(0);
+  packageSprite.x= packageBody.position.x 
+  packageSprite.y= packageBody.position.y 
   drawSprites();
+ 
 }
+
+function keyPressed() {
+ if (keyCode === DOWN_ARROW) {
+    // Look at the hints in the document and understand how to make the package body fall only on press of the Down arrow key.
+Matter.Body.setStatic(packageBody,false);
+
+    
+  }
+}
+
+
+
