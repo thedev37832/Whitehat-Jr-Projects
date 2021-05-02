@@ -1,6 +1,6 @@
-var car,wall;
+var bullet,wall;
 
-var speed,weight;
+var speed,weight,thickness;
 
 
 
@@ -9,32 +9,40 @@ function setup() {
 
   createSprite(400, 200, 50, 50);
 
-  speed = random(50,90);
+  speed = random(223,321);
 
-  weight =random(400,1500);
+  weight =random(30,52);
 
-  car=createSprite(50,200,50,50);
+  bullet=createSprite(50,200,50,50);
 
-  wall=createSprite(1500,200,60,height/2);
+  wall=createSprite(1200,200,thickness,height/2);
 
   wall.shapeColor= color(80,80,80);
 
-  car.velocityX = speed;
+  bullet.velocityX = speed;
+  
+  thickness=random(20,83)
 }
 
 function draw() {
+
   background(255,255,255);  
-if(wall.x - car.x < wall.width/2 + car.width/2) {
-  var deformation = 0.5*weight*speed*speed/22500;
-  car.velocityX=0
- if( deformation<100){
-   car.shapeColor = color(0,255,0);
+
+if(wall.x - bullet.x < wall.width/2 + bullet.width/2) {
+
+  var damage = 0.5*weight*speed*speed/thickness*thickness*thickness;
+  bullet.velocityX=0
+
+ if(damage<30){
+
+   bullet.shapeColor = "green";
+
  } 
- if(deformation>100 && deformation<180 ){
-   car.shapeColor = color(230,230,0);
- }
- if(deformation>180){
-   car.shapeColor = color(255,0,0);
+
+ if(damage>50){
+
+   bullet.shapeColor = "red";
+
  }
 }
   drawSprites();
